@@ -1,5 +1,7 @@
 #!/bin/bash
-prefix=$1
+prefix=`readlink -f $1`
+movedir=`readlink -f $2`
+movedir=`echo "$movedir/"`
 selection=""
 while true
 do
@@ -21,6 +23,10 @@ do
       echo "$action -- $final"
       vlc "$final"
       echo "VLC EXIT" 
+    elif [ "$action" == "MOVE" ]
+    then
+      directory=`zenity --file-selection --directory --filename="$movedir"`
+      echo "$selection -> $directory"
     else
       echo "$action -- $selection"
     fi
