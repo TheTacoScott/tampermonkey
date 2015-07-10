@@ -8,6 +8,22 @@
 // @grant       GM_addStyle
 // ==/UserScript==
 
+
+$(document).keydown(function(event){
+    console.log(event.which);
+    if(event.which=="17")
+        cntrlIsPressed = true;
+});
+
+$(document).keyup(function(event){
+   if(event.which=="17")
+        cntrlIsPressed = false;
+});
+
+var cntrlIsPressed = false;
+
+
+
 function open_images_in_new_tab_v2() 
 { 
    console.log("open_images_in_new_tab_v2");
@@ -16,7 +32,7 @@ function open_images_in_new_tab_v2()
         if (/\.(tga|bmp|jpeg|jpg|gif|png)$/i.test($(this).attr('href')))
         {
             newurl = $(this).prop('href');
-            if (/.*whatever.*/i.test(window.location))
+            if (/.*whatevs.*/i.test(window.location))
             {
                 if (/.*[0-9]{1,4}x[0-9]{1,4}/i.test($(this).attr('href')))
                 {
@@ -70,7 +86,14 @@ function open_images_in_new_tab_v2()
        }
        else
        {
-          $(".zoom").attr("src",$(this).attr("src")).toggleClass("lowz highz");
+          if (cntrlIsPressed)
+          {
+              $(".zoom").attr("src",$(this).attr("src")).toggleClass("lowz highz").css("max-height","auto");
+          }
+          else
+          {
+              $(".zoom").attr("src",$(this).attr("src")).toggleClass("lowz highz").css("max-height",$( window ).height());
+          }
           percent_width = $(".zoom").prop("clientWidth") / $(this).prop("naturalWidth") * 100;
           percent_width = Math.round(percent_width * 100) / 100;
           if (percent_width >= 100)
